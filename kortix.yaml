@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=https://kortix.com/schema/kortix.v2.schema.json
+#
+# A marketing team's project.
+#
+# v2 keeps agent BEHAVIOR in agents/<name>.md (description, mode, permission,
+# the prompt) and GOVERNANCE here: which connectors, secrets, skills and
+# project permissions the agent may reach. v2 is deny-by-default, so every
+# grant this project needs is written out below.
+kortix_version: 2
+default_agent: marketing-lead
+
+project:
+  name: marketing-desk
+  description: Voice, claims and a send policy for one marketing team.
+
+agents:
+  marketing-lead:
+    file: agents/marketing.md
+    connectors: [kortix_slack, kortix_email]
+    skills: [marketing-voice, claim-check]
+    # Opening a change request is a push, so the agent holds
+    # project.gitops.push. It does not hold project.gitops.merge: a person
+    # merges. Read and write are split, and only read is granted here.
+    kortix_permissions: [project.file.read, project.gitops.push]
+    workspace: { project_repository: true }
+
+triggers:
+  - slug: weekly-claims-sweep
+    name: Weekly claims sweep
+    type: cron
+    agent: marketing-lead
+    # Six fields, seconds first: 09:00:00 every Monday.
+    cron: "0 0 9 * * 1"
+    timezone: UTC
+    prompt: |
+      Read every claim list under docs/claims/ and re-check each number
+      against the page it names. Where a page has changed, replace the
+      line's wording with [STALE: what changed] and leave the rewrite to a
+      person. Where a source no longer loads, mark it [NO SOURCE]. If the
+      folder does not exist yet, say so in one line and exit. Open one
+      change request with the updated lists. Send nothing.
+
+policy:
+  # The starter default is allow_all: a connector call that no rule matches
+  # runs. risk holds an unmatched write or destructive call for approval and
+  # lets a read run.
+  default_mode: risk
+
+approvals:
+  # How long a held call waits for a decision. The default is 24h.
+  ttl: 24h
