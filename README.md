@@ -65,8 +65,10 @@ The merge. Nothing merges itself: work reaches `main` through a change request a
 
 If the repo has to stay inside your own network, self-hosting covers it. Run it on Kortix Cloud, in your VPC, or on your own on-prem network. Self-host is free.
 
+What self-hosting takes on a marketing team's side, and where the sandbox has to reach, is set out in [the self-hosted setup guide](https://aimarketingagentsguide.com/self-hosted-ai-marketing-agents).
+
 ## The longer write-up
 
-The page at https://aimarketingagentsguide.com/ is the longer write-up of how these vendors compare, with each claim dated to the page it came from. This repository is the part you can run: change the voice file, and every later draft inherits the change.
+The page at https://aimarketingagentsguide.com/ is the longer write-up of how these vendors compare, with each claim dated to the page it came from. This repository is the part you can run: change the voice file, and every later draft inherits the change. Two pages answer the questions this repo raises most often: [what an agent run costs and what you can cap](https://aimarketingagentsguide.com/ai-marketing-agent-cost), and [where a workspace product like Deskferry stops and a repo-based system starts](https://aimarketingagentsguide.com/deskferry-alternative).
 
 The product code is at [Kortix on GitHub](https://github.com/kortix-ai/suna).
